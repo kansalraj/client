@@ -1,4 +1,3 @@
-
 import React from "react";
 import ReactDom from "react-dom/client";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -19,7 +18,7 @@ const appRouter = createBrowserRouter([
     element: <AppLayout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/transactions", element: <TransactionsPage /> }
+      { path: "/transactions", element: <TransactionsPage /> },
     ],
   },
 ]);

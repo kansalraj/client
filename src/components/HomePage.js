@@ -1,34 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { TextField, Button, Typography, Container, Box, FormControlLabel, Switch } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Box,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
 
-const config = require('../config');
-const environment = process.env.NODE_ENV || 'development';
+const config = require("../config");
+const environment = process.env.NODE_ENV || "development";
 const baseURL = config[environment].baseURL;
 
 const HomePage = () => {
-  const [name, setName] = useState('');
-  const [balance, setBalance] = useState('');
-  const [walletId, setWalletId] = useState('');
-  const [transactionAmount, setTransactionAmount] = useState('');
+  const [name, setName] = useState("");
+  const [balance, setBalance] = useState("");
+  const [walletId, setWalletId] = useState("");
+  const [transactionAmount, setTransactionAmount] = useState("");
   const [isCredit, setIsCredit] = useState(true);
 
   const handleTransaction = async () => {
     try {
       const response = await axios.post(`${baseURL}/transact/${walletId}`, {
-        amount: isCredit ? parseFloat(transactionAmount) : -parseFloat(transactionAmount),
-        description: isCredit ? 'Credit' : 'Debit',
+        amount: isCredit
+          ? parseFloat(transactionAmount)
+          : -parseFloat(transactionAmount),
+        description: isCredit ? "Credit" : "Debit",
       });
       setBalance(response.data.balance);
-      setTransactionAmount('');
+      setTransactionAmount("");
     } catch (error) {
-      console.error('Error performing transaction:', error);
+      console.error("Error performing transaction:", error);
     }
   };
 
   useEffect(() => {
-    const savedWalletId = localStorage.getItem('walletId');
+    const savedWalletId = localStorage.getItem("walletId");
     if (savedWalletId) {
       setWalletId(savedWalletId);
       fetchWalletDetails(savedWalletId);
@@ -41,19 +51,22 @@ const HomePage = () => {
       setBalance(response.data.balance);
       setName(response.data.name);
     } catch (error) {
-      console.error('Error fetching wallet details:', error);
+      console.error("Error fetching wallet details:", error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseURL}/setup`, { balance: parseFloat(balance), name });
+      const response = await axios.post(`${baseURL}/setup`, {
+        balance: parseFloat(balance),
+        name,
+      });
       const newWalletId = response.data.id;
       setWalletId(newWalletId);
-      localStorage.setItem('walletId', newWalletId);
+      localStorage.setItem("walletId", newWalletId);
     } catch (error) {
-      console.error('Error setting up wallet:', error);
+      console.error("Error setting up wallet:", error);
     }
   };
 
@@ -70,8 +83,8 @@ const HomePage = () => {
           <Typography variant="body1" align="center" gutterBottom>
             Balance: {balance}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-            <Link to="/transactions" style={{ textDecoration: 'none' }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Link to="/transactions" style={{ textDecoration: "none" }}>
               <Button variant="contained" color="primary">
                 View Transactions
               </Button>
@@ -80,7 +93,7 @@ const HomePage = () => {
 
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6">Perform Transaction</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
               <TextField
                 type="number"
                 step="0.0001"
@@ -99,9 +112,13 @@ const HomePage = () => {
                     color="primary"
                   />
                 }
-                label= {isCredit? "Credit": "Debit"}
+                label={isCredit ? "Credit" : "Debit"}
               />
-              <Button variant="contained" color="primary" onClick={handleTransaction}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleTransaction}
+              >
                 Submit Transaction
               </Button>
             </Box>
@@ -112,7 +129,7 @@ const HomePage = () => {
           <Typography variant="h5" align="center" gutterBottom>
             Setup Wallet
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Name"
