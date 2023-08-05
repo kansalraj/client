@@ -72,8 +72,17 @@ const HomePage = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h3" component="h1" align="center" gutterBottom>
-        Wallet System
+      <Typography
+        color="primary"
+        variant="h4"
+        component="h1"
+        align="center"
+        gutterBottom
+      >
+        <b>Wallet System</b> for <b>HighLevel</b> <br /> From{" "}
+        <b>
+          Ankit Kansal <br /> ankit.kansal1608@gmail.com
+        </b>
       </Typography>
       {walletId ? (
         <>
