@@ -20,6 +20,9 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
+const config = require('../config');
+const environment = process.env.NODE_ENV || 'development';
+const baseURL = config[environment].baseURL;
 
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -34,7 +37,7 @@ const TransactionsPage = () => {
   const fetchTransactions = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/transactions?walletId=${localStorage.getItem('walletId')}&skip=${(pageNumber - 1) * pageSize}&limit=${pageSize}&sortOrder=${sortOrder}`
+        `${baseURL}/transactions?walletId=${localStorage.getItem('walletId')}&skip=${(pageNumber - 1) * pageSize}&limit=${pageSize}&sortOrder=${sortOrder}`
       );
       setTransactions(response.data);
     } catch (error) {

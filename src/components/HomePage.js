@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { TextField, Button, Typography, Container, Box, FormControlLabel, Switch } from '@mui/material';
 
+const config = require('../config');
+const environment = process.env.NODE_ENV || 'development';
+const baseURL = config[environment].baseURL;
+
 const HomePage = () => {
   const [name, setName] = useState('');
   const [balance, setBalance] = useState('');
@@ -12,7 +16,7 @@ const HomePage = () => {
 
   const handleTransaction = async () => {
     try {
-      const response = await axios.post(`http://localhost:4000/api/transact/${walletId}`, {
+      const response = await axios.post(`${baseURL}/transact/${walletId}`, {
         amount: isCredit ? parseFloat(transactionAmount) : -parseFloat(transactionAmount),
         description: isCredit ? 'Credit' : 'Debit',
       });
@@ -33,7 +37,7 @@ const HomePage = () => {
 
   const fetchWalletDetails = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/wallet/${id}`);
+      const response = await axios.get(`${baseURL}/wallet/${id}`);
       setBalance(response.data.balance);
       setName(response.data.name);
     } catch (error) {
@@ -44,7 +48,7 @@ const HomePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/api/setup', { balance: parseFloat(balance), name });
+      const response = await axios.post('${baseURL}/setup', { balance: parseFloat(balance), name });
       const newWalletId = response.data.id;
       setWalletId(newWalletId);
       localStorage.setItem('walletId', newWalletId);
