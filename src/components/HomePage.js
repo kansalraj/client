@@ -48,7 +48,7 @@ const HomePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('${baseURL}/setup', { balance: parseFloat(balance), name });
+      const response = await axios.post(`${baseURL}/setup`, { balance: parseFloat(balance), name });
       const newWalletId = response.data.id;
       setWalletId(newWalletId);
       localStorage.setItem('walletId', newWalletId);
